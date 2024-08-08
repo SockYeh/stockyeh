@@ -4,7 +4,7 @@ from secrets import token_hex
 
 import aiosmtplib
 import jwt
-from config import env
+from stockyeh.backend.utils.config import env
 
 SMTP_EMAIL = env.SMTP_EMAIL
 SMTP_PASSWORD = env.SMTP_PASSWORD
@@ -68,7 +68,7 @@ async def send_verification_email(email: str, token: str, url: str) -> bool:
     msg["To"] = email
 
     try:
-        async with aiosmtplib.SMTP(SMTP_HOST, SMTP_PORT) as smtp:
+        async with aiosmtplib.SMTP(hostname=SMTP_HOST, port=SMTP_PORT) as smtp:
             await smtp.ehlo()
             await smtp.login(SMTP_EMAIL, SMTP_PASSWORD)
             await smtp.send_message(msg)
