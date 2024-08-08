@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 from stockyeh.backend.database import create_tables
+from stockyeh.backend.routers import auth
 from stockyeh.backend.utils.config import env
 
 
@@ -16,3 +17,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:  # noqa: ARG001
 
 app = FastAPI(lifespan=lifespan)
 app.add_middleware(SessionMiddleware, secret_key=env.AUTH_SECRET)
+
+routers = [auth.router]
+for router in routers:
+    app.include_router(router)
