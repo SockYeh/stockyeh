@@ -13,6 +13,10 @@ class MagicLinkIPMismatchError(Exception):
     """Magic link ip mismatch error."""
 
 
+class MagicLinkInvalidError(Exception):
+    """Magic link invalid error."""
+
+
 def encode_magiclink_jwt(email: str, ip: str) -> str:
     """Encode magic link jwt."""
     payload = {
@@ -26,7 +30,10 @@ def encode_magiclink_jwt(email: str, ip: str) -> str:
 
 def decode_magiclink_jwt(token: str, ip: str) -> dict:
     """Decode magic link jwt."""
-    decoded = jwt.decode(token, env.AUTH_SECRET, algorithms=["HS256"])
+    try:
+        decoded = jwt.decode(token, env.AUTH_SECRET, algorithms=["HS256"])
+    except jwt.InvalidTokenError as e:
+        raise MagicLinkExpiredError from e
 
     if decoded["ip"] != ip:
         raise MagicLinkIPMismatchError
