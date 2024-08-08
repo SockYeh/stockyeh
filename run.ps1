@@ -1,0 +1,1 @@
+uvicorn "stockyeh.backend.main:app" --reload
