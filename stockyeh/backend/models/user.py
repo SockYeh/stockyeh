@@ -1,9 +1,12 @@
-from stockyeh.backend.models.model import MappedBase
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.sql import func
+from stockyeh.backend.database import Base
 
 
-class User(MappedBase):
+class User(Base):
+    """Database model for users."""
+
+    __tablename__ = "user"
 
     id: Column[int] = Column(Integer, primary_key=True, index=True)
     username: Column[str] = Column(String(20), unique=True, index=True, nullable=False)
@@ -11,11 +14,20 @@ class User(MappedBase):
     joined_at: Column = Column(DateTime(timezone=True), server_default=func.now())
 
 
-class Portfolio(MappedBase):
+class Portfolio(Base):
+    """Database model for user portfolio."""
+
+    __tablename__ = "portfolio"
 
     user_id: Column[int] = Column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+        Integer,
+        ForeignKey("user.id", ondelete="CASCADE"),
+        nullable=False,
     )
-    asset_id: Column[int] = Column(Integer, ForeignKey("asset.id", ondelete="CASCADE"))
+    asset_id: Column[int] = Column(
+        Integer,
+        ForeignKey("asset.id", ondelete="CASCADE"),
+        primary_key=True,
+    )
     amount: Column[int] = Column(Integer, nullable=False)
     bought_at: Column = Column(DateTime(timezone=True), server_default=func.now())

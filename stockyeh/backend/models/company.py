@@ -1,10 +1,12 @@
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Float
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.sql import func
+from stockyeh.backend.database import Base
 
 
-class Company(DeclarativeBase):
-    __tablename__ = "companies"
+class Company(Base):
+    """Database model for companies."""
+
+    __tablename__ = "company"
 
     id: Column[int] = Column(Integer, primary_key=True, index=True)
     name: Column[str] = Column(String(50), unique=True, index=True, nullable=False)
@@ -15,27 +17,39 @@ class Company(DeclarativeBase):
     headquarters: Column[str] = Column(String(100), nullable=False)
     industry: Column[str] = Column(String(50), nullable=False)
     last_updated: Column = Column(
-        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
     )
     created_at: Column = Column(DateTime(timezone=True), server_default=func.now())
 
 
-class CompanyHistory(DeclarativeBase):
+class CompanyHistory(Base):
+    """Database model for company history."""
+
     __tablename__ = "company_history"
 
     company_id: Column[int] = Column(
-        Integer, ForeignKey("companies.id", ondelete="CASCADE")
+        Integer,
+        ForeignKey("company.id", ondelete="CASCADE"),
     )
     revenue: Column[float] = Column(Float, nullable=False)
     market_cap: Column[float] = Column(Float, nullable=False)
-    timestamp: Column = Column(DateTime(timezone=True), server_default=func.now())
+    timestamp: Column = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        primary_key=True,
+    )
 
 
-class CompanyRoles(DeclarativeBase):
+class CompanyRoles(Base):
+    """Database model for company roles."""
+
     __tablename__ = "company_roles"
 
     company_id: Column[int] = Column(
-        Integer, ForeignKey("companies.id", ondelete="CASCADE")
+        Integer,
+        ForeignKey("company.id", ondelete="CASCADE"),
     )
     CEO: Column[str] = Column(String(50), nullable=False)
     CMO: Column[str] = Column(String(50), nullable=False)
@@ -43,17 +57,28 @@ class CompanyRoles(DeclarativeBase):
     CFO: Column[str] = Column(String(50), nullable=False)
     CIO: Column[str] = Column(String(50), nullable=False)
     COO: Column[str] = Column(String(50), nullable=False)
-    timestamp: Column = Column(DateTime(timezone=True), server_default=func.now())
+    timestamp: Column = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        primary_key=True,
+    )
 
 
-class CompanyProjects(DeclarativeBase):
+class CompanyProjects(Base):
+    """Database model for company projects."""
+
     __tablename__ = "company_projects"
 
     company_id: Column[int] = Column(
-        Integer, ForeignKey("companies.id", ondelete="CASCADE")
+        Integer,
+        ForeignKey("company.id", ondelete="CASCADE"),
     )
     project_name: Column[str] = Column(String(50), nullable=False)
     project_description: Column[str] = Column(String(500), nullable=False)
     project_status: Column[str] = Column(String(50), nullable=False)
     project_completion_at: Column = Column(DateTime(timezone=True), nullable=False)
-    timestamp: Column = Column(DateTime(timezone=True), server_default=func.now())
+    timestamp: Column = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        primary_key=True,
+    )
