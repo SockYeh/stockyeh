@@ -4,6 +4,7 @@ from secrets import token_hex
 
 import aiosmtplib
 import jwt
+
 from stockyeh.backend.utils.config import env
 
 SMTP_EMAIL = env.SMTP_EMAIL
