@@ -1,6 +1,84 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Sign In</h1>
-    <h2>asfuihasifuhasiufhs</h2>
+<div class="justify-content-center mx-auto">
+    <section class="py-4 align-items-center justify-content-center" style="border-color: #7389AE;background: #416788;">
+        <div class="container-xl rounded align-items-center" style="background: #7389AE;padding-top: 12px;padding-bottom: 12px;">
+            
+                <div class="border rounded border-0 border-light d-flex flex-column justify-content-between align-items-center p-4 p-lg-5" data-bs-theme="dark" style="background: #416788;">
+                    <div class="py-lg-1">
+                        <h2 class="fw-bold text-lg-center" style="color: #E0E0E2;">Sign In</h2>
+                        
+                    </div>
+                    <br>
+                    <form>
+                        <div >
+                            <div class="mb-3 justify-content-center align-items-center text-center" >
+                                <div id="emailAlertPlaceholder"></div>
+                                <input type="email" class="form-control-lg border border-success" placeholder="Email" id="emailForm" style="background: #416788;">
+                                <br>
+                                <br>
+                                <button type="submit" class="btn btn-success btn-lg border-0 text" style="background: #81D2C7;" id="emailSentButton">Submit</button>
+                                <script>
+                                    const alertPlaceholder = document.getElementById('emailAlertPlaceholder')
+                                    const appendAlert = (message, type) => {
+                                        const wrapper = document.createElement('div')
+                                        wrapper.innerHTML = [
+                                            `<div class="alert alert-${type} alert-dismissible" style="color: #E0E0E2; font-weight: 500" role="alert">`,
+                                            `   <div>${message}</div>`,
+                                            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                                            '</div>'
+                                        ].join('')
+
+                                        alertPlaceholder.append(wrapper)
+                                    }
+                                    function sendEmail() {
+                                        const emailForm = document.getElementById('emailForm')
+                                        const email = emailForm.value
+                                        $.ajax({
+                                            url: '/api/auth/login',
+                                            type: 'POST',
+                                            data: JSON.stringify({email: email}),
+                                            contentType: 'application/json',
+                                            success: function (data) {
+                                                appendAlert('Email sent successfully! Please check your inbox.', 'success')
+                                            },
+                                            error: function (data) {
+                                                console.log(data);
+                                                appendAlert('An error occured while trying to send you an email.', 'danger')
+                                            },
+                                        })
+                                        
+                                    }
+
+                                    const alertTrigger = document.getElementById('emailSentButton')
+                                    if (alertTrigger) {
+                                        alertTrigger.addEventListener('click', () => {
+                                            sendEmail()
+                                        })
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        </div>
+    </section>
+    <hr>
+    <div>
+        <h1 class="text-center" style="color: #E0E0E2;">Info</h1>
+        <section class="py-4 align-items-center justify-content-center" style="border-color: #7389AE;background: #416788;">
+            <div class="container-xl rounded align-items-center" style="background: #7389AE;padding-top: 12px;padding-bottom: 12px;">
+                
+            <h3 class="text-center" style="color: #E0E0E2;">This is a stock trading platform. You can trade stocks, view your portfolio and get the latest news on the stock market.</h2>
+            <h3 class="text-center" style="color: #E0E0E2;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia expedita doloremque aliquid numquam delectus, placeat molestiae qui repellendus veritatis similique natus est assumenda voluptates mollitia saepe accusantium iste ipsum totam.</h2>
+            <h3 class="text-center" style="color: #E0E0E2;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate distinctio, eos aperiam labore repellendus quo nostrum, sequi harum fuga, quae aspernatur ea est vitae. Nam facere voluptas impedit cum dolorum!</h2>
+
+            </div>
+            
+        </section> 
+    </div>
+    
+</div>
+
 {% endblock %}
