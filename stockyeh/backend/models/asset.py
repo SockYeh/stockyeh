@@ -22,6 +22,7 @@ class Assets(Base):
     company_id: Column[int] = Column(
         Integer,
         ForeignKey("company.id", ondelete="CASCADE"),
+        nullable=False,
     )
 
 
@@ -30,7 +31,11 @@ class AssetHistory(Base):
 
     __tablename__ = "asset_history"
 
-    asset_id: Column[int] = Column(Integer, ForeignKey("asset.id", ondelete="CASCADE"))
+    asset_id: Column[int] = Column(
+        Integer,
+        ForeignKey("asset.id", ondelete="CASCADE"),
+        nullable=False,
+    )
     price: Column[float] = Column(Float, nullable=False)
     timestamp: Column = Column(
         DateTime(timezone=True),

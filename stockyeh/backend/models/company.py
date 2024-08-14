@@ -33,6 +33,7 @@ class CompanyHistory(Base):
     company_id: Column[int] = Column(
         Integer,
         ForeignKey("company.id", ondelete="CASCADE"),
+        nullable=False,
     )
     revenue: Column[float] = Column(Float, nullable=False)
     market_cap: Column[float] = Column(Float, nullable=False)
@@ -51,6 +52,7 @@ class CompanyRoles(Base):
     company_id: Column[int] = Column(
         Integer,
         ForeignKey("company.id", ondelete="CASCADE"),
+        nullable=False,
     )
     CEO: Column[str] = Column(String(50), nullable=False)
     CMO: Column[str] = Column(String(50), nullable=False)
@@ -73,6 +75,7 @@ class CompanyProjects(Base):
     company_id: Column[int] = Column(
         Integer,
         ForeignKey("company.id", ondelete="CASCADE"),
+        nullable=False,
     )
     project_name: Column[str] = Column(String(50), nullable=False)
     project_description: Column[str] = Column(String(500), nullable=False)
