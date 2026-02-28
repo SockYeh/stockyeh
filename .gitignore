@@ -172,3 +172,20 @@ cython_debug/
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+
+### react ###
+.DS_*
+*.log
+logs
+**/*.backup.*
+**/*.back.*
+
+node_modules
+bower_components
+
+*.sublime*
+
+psd
+thumb
+sketch
