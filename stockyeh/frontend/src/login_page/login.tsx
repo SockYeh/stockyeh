@@ -15,7 +15,7 @@ function Login() {
         }
     }
 
-    const handleChange = (event) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
         setMessage(event.target.value);
         
